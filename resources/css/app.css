@@ -269,6 +269,21 @@
     --animate-star-pop: star-pop 450ms cubic-bezier(0.175, 0.885, 0.32, 1.275)
         both;
     --animate-flame-flicker: flame-flicker 5s ease-in-out infinite;
+    /* Holds the fresh treatment for about three seconds, then fades it. No fill, so hover takes over once it ends. */
+    --animate-fresh-highlight: fresh-highlight 4.4s ease-out;
+
+    @keyframes fresh-highlight {
+        0%,
+        68% {
+            background-color: color-mix(
+                in oklab,
+                var(--primary) 7%,
+                transparent
+            );
+            box-shadow: inset 3px 0 0
+                color-mix(in oklab, var(--primary) 70%, transparent);
+        }
+    }
 
     @keyframes flame-flicker {
         0%,
@@ -842,17 +857,15 @@ html body[data-scroll-locked] {
     }
 }
 
-/* Commits and notifications that just arrived, until the reader moves on. Only they fade slowly, as this unlayered
-   rule would otherwise override the hover transition of every row. */
-[data-commit][data-fresh],
-[data-notification-group][data-fresh] {
+/* Commits that just arrived on their own, until the reader moves on. Only they fade slowly, as this unlayered rule
+   would otherwise override the hover transition of every commit. */
+[data-commit][data-fresh] {
     transition:
         background-color 1.4s ease,
         box-shadow 1.4s ease;
 }
 
-[data-commit][data-fresh=''],
-[data-notification-group][data-fresh=''] {
+[data-commit][data-fresh=''] {
     background-color: color-mix(in oklab, var(--primary) 7%, transparent);
     box-shadow: inset 3px 0 0
         color-mix(in oklab, var(--primary) 70%, transparent);
